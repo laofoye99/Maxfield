@@ -9,10 +9,10 @@ import { siteConfig  } from "@/config/site";
 import { skills, education } from "@/config/resume";
 
 const interests = [
-  { title: "Robotics",       detail: "motion planning, SLAM"          },
-  { title: "3D Vision",      detail: "point clouds, depth estimation"  },
-  { title: "ML",             detail: "perception models, RL"           },
-  { title: "Visualization",  detail: "Plotly, Three.js, WebGL"         },
+  { titleEn: "Robotics",      titleZh: "机器人",     detailEn: "motion planning, SLAM",         detailZh: "运动规划，SLAM"         },
+  { titleEn: "3D Vision",     titleZh: "三维视觉",   detailEn: "point clouds, depth estimation", detailZh: "点云，深度估计"         },
+  { titleEn: "ML",            titleZh: "机器学习",   detailEn: "perception models, RL",          detailZh: "感知模型，强化学习"     },
+  { titleEn: "Visualization", titleZh: "可视化",     detailEn: "Plotly, Three.js, WebGL",        detailZh: "Plotly, Three.js, WebGL" },
 ];
 
 function Divider() {
@@ -39,9 +39,9 @@ export function Sidebar() {
   return (
     <aside
       style={{ background: "transparent", borderLeft: "1px solid var(--border)", top: "56px" }}
-      className="sticky flex flex-col items-center gap-5 px-6 py-10 border-l"
+      className="sticky flex flex-col items-center gap-5 px-6 py-10"
     >
-      {/* Avatar — only links to resume on homepage */}
+      {/* Avatar */}
       {isHome ? (
         <Link href="/resume" title={tr.avatarTip} className="group shrink-0">
           <div
@@ -68,7 +68,7 @@ export function Sidebar() {
 
       {/* About */}
       <div className="w-full">
-        <InfoLabel>About</InfoLabel>
+        <InfoLabel>{tr.sidebar.about}</InfoLabel>
         <p style={{ color: "var(--muted)" }} className="text-[0.78rem] leading-[1.75]">
           {locale === "zh" ? owner.bioZh : owner.bioEn}
         </p>
@@ -78,20 +78,20 @@ export function Sidebar() {
 
       {/* Interests */}
       <div className="w-full">
-        <InfoLabel>Interests</InfoLabel>
+        <InfoLabel>{tr.sidebar.interests}</InfoLabel>
         <ul className="flex flex-col gap-0.5 list-none">
           {interests.map((item) => (
             <li
-              key={item.title}
+              key={item.titleEn}
               style={{ borderLeft: "2px solid transparent", color: "var(--muted)" }}
               className="text-[0.78rem] py-1.5 pl-2.5 leading-snug cursor-default
                 transition-all duration-300
                 hover:border-l-[var(--primary)] hover:text-[var(--text)]"
             >
               <span style={{ color: "var(--text-section)" }} className="font-semibold">
-                {item.title}
+                {locale === "zh" ? item.titleZh : item.titleEn}
               </span>{" "}
-              — {item.detail}
+              — {locale === "zh" ? item.detailZh : item.detailEn}
             </li>
           ))}
         </ul>
@@ -101,7 +101,7 @@ export function Sidebar() {
 
       {/* Skills */}
       <div className="w-full">
-        <InfoLabel>Skills</InfoLabel>
+        <InfoLabel>{tr.sidebar.skills}</InfoLabel>
         <div className="flex flex-wrap gap-1.5 mt-1">
           {skills.map((s) => (
             <Tag key={s} text={s} variant="skill" />
@@ -113,7 +113,7 @@ export function Sidebar() {
 
       {/* Education */}
       <div className="w-full">
-        <InfoLabel>Education</InfoLabel>
+        <InfoLabel>{tr.sidebar.education}</InfoLabel>
         {education.map((ed, i) => (
           <div key={i} style={{ color: "var(--muted)" }} className="text-[0.78rem] leading-[1.75]">
             <span style={{ color: "var(--text-section)" }} className="font-semibold">
@@ -135,7 +135,7 @@ export function Sidebar() {
           bg-transparent transition-all duration-300
           hover:bg-[var(--primary)] hover:text-white hover:border-[var(--primary)]"
       >
-        {tr.resume.title}
+        {tr.sidebar.resume}
       </Link>
     </aside>
   );
