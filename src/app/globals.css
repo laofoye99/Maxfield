@@ -2,26 +2,106 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Light mode variables ─────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary:       #A0D8EF;
+  --primary-dark:  #6bbfe0;
+  --accent:        #48BB78;
+  --text:          #1A202C;
+  --text-section:  #4A5568;
+  --muted:         #718096;
+  --surface:       #FAFBFC;
+  --bg:            #FAFBFC;
+  --card-bg:       #ffffff;
+  --border:        #E8EDF2;
+  --tag-cat-bg:    #C6F6D5;
+  --tag-cat-txt:   #276749;
+  --tag-skill-bg:  #EBF8FF;
+  --tag-skill-txt: #2B6CB0;
+  --tag-gray-bg:   #F7FAFC;
+  --tag-gray-txt:  #4A5568;
+  --footer-bg:     #FAFBFC;
+  --nav-bg:        rgba(250,251,252,0.95);
+  --card-shadow:   0 4px 6px -1px rgb(0 0 0 / 0.05);
+  --card-project-bg:     #F0F9FF;
+  --card-project-border: #EDF2F7;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Dark mode variables ──────────────────────────────────────────────────── */
+.dark {
+  --primary:       #7EC8E3;
+  --primary-dark:  #5BB3D0;
+  --accent:        #68D391;
+  --text:          #F0F4F8;
+  --text-section:  #CBD5E0;
+  --muted:         #90A4AE;
+  --surface:       #0F1117;
+  --bg:            #0F1117;
+  --card-bg:       #1A1D27;
+  --border:        #2D3748;
+  --tag-cat-bg:    #1C3A2A;
+  --tag-cat-txt:   #68D391;
+  --tag-skill-bg:  #1A2A3A;
+  --tag-skill-txt: #7EC8E3;
+  --tag-gray-bg:   #1E2330;
+  --tag-gray-txt:  #90A4AE;
+  --footer-bg:     #0D1014;
+  --nav-bg:        rgba(15,17,23,0.95);
+  --card-shadow:   0 4px 6px -1px rgb(0 0 0 / 0.4);
 }
 
+/* ── Navbar hover ─────────────────────────────────────────────────────────── */
+.nav-hoverable {
+  transition: color 0.3s ease;
+}
+.nav-hoverable:hover {
+  color: var(--accent) !important;
+  --card-project-bg:     #141B2D;
+  --card-project-border: #1E2D45;
+}
+
+/* ── Global transition — ensures all elements switch at the same speed ────── */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 0.4s;
+  transition-timing-function: ease;
+}
+
+/* Reset transition for elements that need instant response */
+input, textarea, button, a, [role="button"] {
+  transition-property: background-color, border-color, color, box-shadow, transform, opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* ── Scrollbar ────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 999px; }
+
+/* ── Code block light/dark switching (rehype-pretty-code) ─────────────────── */
+[data-theme="dark"]                        { display: none; }
+.dark [data-theme="light"]                 { display: none; }
+.dark [data-theme="dark"]                  { display: block; }
+:not(pre) > code[data-theme]               { display: inline; }
+.dark :not(pre) > code[data-theme="light"] { display: none; }
+.dark :not(pre) > code[data-theme="dark"]  { display: inline; }
+
+/* ── Prose ────────────────────────────────────────────────────────────────── */
+.prose pre              { @apply rounded-xl text-sm overflow-x-auto; }
+.prose pre > code       { @apply grid; }
+.prose [data-line]      { @apply px-4 py-0.5; }
+.prose [data-highlighted-line] {
+  background: rgba(160,216,239,0.12);
+  border-left: 2px solid var(--primary);
 }
+.prose a[href^="#"]       { text-decoration: none; color: inherit; }
+.prose a[href^="#"]:hover { color: var(--primary-dark); }
