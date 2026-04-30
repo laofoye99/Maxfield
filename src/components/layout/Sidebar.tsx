@@ -22,8 +22,8 @@ function Divider() {
 function InfoLabel({ children }: { children: React.ReactNode }) {
   return (
     <p
-      style={{ color: "var(--muted)", letterSpacing: "0.22em" }}
-      className="text-[0.58rem] font-bold uppercase mb-2.5"
+      style={{ color: "var(--muted)", letterSpacing: "0.15em" }}
+      className="text-[0.7rem] font-bold uppercase mb-2.5"
     >
       {children}
     </p>
