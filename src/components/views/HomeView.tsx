@@ -28,7 +28,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 
 export function HomeView({ recentPosts }: HomeViewProps) {
-  const { tr, locale } = useLocale();
+  const { tr } = useLocale();
   const [page, setPage] = useState(1);
 
   const blogRef    = useRef<HTMLDivElement>(null);

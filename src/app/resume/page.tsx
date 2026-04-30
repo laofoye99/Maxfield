@@ -3,7 +3,6 @@
 import { Tag          } from "@/components/ui/Tag";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { useLocale    } from "@/components/providers/LocaleProvider";
-import { siteConfig   } from "@/config/site";
 import { experience, education, skills } from "@/config/resume";
 
 export default function ResumePage() {
