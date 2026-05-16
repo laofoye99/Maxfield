@@ -28,10 +28,11 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function HomeView({ recentPosts }: HomeViewProps) {
-  const { tr } = useLocale();
+export function HomeView({ recentPostsEn, recentPostsZh }: HomeViewProps) {
+  const { locale, tr } = useLocale();
   const [page, setPage] = useState(1);
-
+  const recentPosts = locale === "zh" ? recentPostsZh : recentPostsEn;
+  
   const blogRef    = useRef<HTMLDivElement>(null);
   const projectRef = useRef<HTMLDivElement>(null);
 
