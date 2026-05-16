@@ -1,9 +1,9 @@
 // Server Component — no "use client"
 import { getAllPostMeta, getAllPostMetaZh } from "@/lib/markdown";
-import { BlogView } from "@/components/views/BlogView";
+import { HomeView } from "@/components/views/HomeView";
 
-export default function BlogPage() {
-  const postsEn = getAllPostMeta();
-  const postsZh = getAllPostMetaZh();
-  return <BlogView postsEn={postsEn} postsZh={postsZh} />;
+export default function HomePage() {
+  const recentPostsEn = getAllPostMeta().slice(0, 10);
+  const recentPostsZh = getAllPostMetaZh().slice(0, 10);
+  return <HomeView recentPostsEn={recentPostsEn} recentPostsZh={recentPostsZh} />;
 }
