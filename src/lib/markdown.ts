@@ -20,6 +20,8 @@ export interface PostFrontmatter {
   summary?: string;
   tags?:    string[];
   draft?:   boolean;
+  prev?:    string;  // optional slug of the previous post (overrides chronological order)
+  next?:    string;  // optional slug of the next post (overrides chronological order)
 }
 
 export interface PostMeta extends PostFrontmatter {
@@ -135,4 +137,38 @@ export function getAllPostSlugs(): { slug: string; lang: "en" | "zh" }[] {
     : [];
 
   return [...en, ...zh];
+}
+
+/**
+ * Get previous and next posts for a given slug.
+ * Checks frontmatter `prev` / `next` fields first;
+ * falls back to chronological order (newest → oldest).
+ */
+export function getAdjacentPosts(
+  slug: string,
+  lang: "en" | "zh" = "en",
+): { prev: PostMeta | null; next: PostMeta | null } {
+  const all = getPostsByLocale(lang);
+  const idx = all.findIndex((p) => p.slug === slug);
+  if (idx === -1) return { prev: null, next: null };
+
+  const current = all[idx];
+
+  // Check explicit frontmatter links first
+  let prev: PostMeta | null = null;
+  let next: PostMeta | null = null;
+
+  if (current.prev) {
+    prev = all.find((p) => p.slug === current.prev) ?? null;
+  }
+  if (current.next) {
+    next = all.find((p) => p.slug === current.next) ?? null;
+  }
+
+  // Fall back to chronological neighbors
+  // Posts are sorted newest-first, so "prev" = older (idx+1), "next" = newer (idx-1)
+  if (!prev && idx + 1 < all.length) prev = all[idx + 1];
+  if (!next && idx - 1 >= 0)       next = all[idx - 1];
+
+  return { prev, next };
 }

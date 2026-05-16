@@ -4,7 +4,7 @@ import Link        from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { Tag       } from "@/components/ui/Tag";
 import { mdxComponents } from "@/components/blog/MdxComponents";
-import { getPost, getAllPostSlugs } from "@/lib/markdown";
+import { getPost, getAllPostSlugs, getAdjacentPosts } from "@/lib/markdown";
 import { formatDate } from "@/lib/utils";
 
 type Props = { params: { slug: string } };
@@ -26,6 +26,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PostPage({ params }: Props) {
   const post = await getPost(params.slug);
   if (!post) notFound();
+
+  const { prev, next } = getAdjacentPosts(params.slug, post.lang);
 
   return (
     <div className="max-w-2xl mx-auto px-6 py-14">
@@ -71,6 +73,51 @@ export default async function PostPage({ params }: Props) {
       >
         <MDXRemote source={post.rawContent} options={post.mdxOptions} components={mdxComponents} />
       </article>
+
+      {/* Previous / Next navigation */}
+      {(prev || next) && (
+        <nav
+          style={{ borderColor: "var(--border)" }}
+          className="mt-16 pt-8 border-t grid grid-cols-2 gap-4"
+        >
+          {prev ? (
+            <Link
+              href={`/blog/${prev.slug}`}
+              className="group text-left"
+            >
+              <span style={{ color: "var(--muted)" }} className="text-xs uppercase tracking-wider">
+                ← Previous
+              </span>
+              <p
+                style={{ color: "var(--text)" }}
+                className="text-sm font-medium mt-1 group-hover:text-[var(--primary-dark)] transition-colors line-clamp-1"
+              >
+                {prev.title}
+              </p>
+            </Link>
+          ) : (
+            <div />
+          )}
+          {next ? (
+            <Link
+              href={`/blog/${next.slug}`}
+              className="group text-right"
+            >
+              <span style={{ color: "var(--muted)" }} className="text-xs uppercase tracking-wider">
+                Next →
+              </span>
+              <p
+                style={{ color: "var(--text)" }}
+                className="text-sm font-medium mt-1 group-hover:text-[var(--primary-dark)] transition-colors line-clamp-1"
+              >
+                {next.title}
+              </p>
+            </Link>
+          ) : (
+            <div />
+          )}
+        </nav>
+      )}
     </div>
   );
 }
