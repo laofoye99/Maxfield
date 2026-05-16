@@ -1,4 +1,4 @@
-import { getAllPostMeta, getAllPostSlugs } from "@/lib/markdown";
+import { getAllPostMeta } from "@/lib/markdown";
 import { TagView } from "@/components/views/TagView";
 import { notFound } from "next/navigation";
 
