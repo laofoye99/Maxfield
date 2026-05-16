@@ -1,12 +1,11 @@
 import fs   from "fs";
 import path from "path";
-import matter            from "gray-matter";
-import { serialize }     from "next-mdx-remote/serialize";
-import remarkGfm         from "remark-gfm";
-import remarkMath        from "remark-math";
-import rehypeKatex       from "rehype-katex";
-import rehypePrettyCode  from "rehype-pretty-code";
-import rehypeSlug        from "rehype-slug";
+import matter                 from "gray-matter";
+import remarkGfm              from "remark-gfm";
+import remarkMath             from "remark-math";
+import rehypeKatex            from "rehype-katex";
+import rehypePrettyCode       from "rehype-pretty-code";
+import rehypeSlug             from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { estimateReadTime }   from "./utils";
 
@@ -30,8 +29,13 @@ export interface PostMeta extends PostFrontmatter {
 }
 
 export interface Post extends PostMeta {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  source: any;
+  rawContent: string;
+  // Matches next-mdx-remote SerializeOptions shape
+  mdxOptions: {
+    mdxOptions?: Record<string, unknown>;
+    parseFrontmatter?: boolean;
+    scope?: Record<string, unknown>;
+  };
 }
 
 // ── rehype-pretty-code config ─────────────────────────────────────────────────
@@ -96,7 +100,7 @@ export async function getPost(slug: string, lang?: "en" | "zh"): Promise<Post | 
     const fm                = data as PostFrontmatter;
     const detectedLang: "en" | "zh" = dir === POSTS_DIR_ZH ? "zh" : "en";
 
-    const source = await serialize(content, {
+    const mdxOptions = {
       mdxOptions: {
         remarkPlugins: [remarkGfm, remarkMath],
         rehypePlugins: [
@@ -108,9 +112,9 @@ export async function getPost(slug: string, lang?: "en" | "zh"): Promise<Post | 
         format: filePath.endsWith(".mdx") ? "mdx" : "md",
       },
       parseFrontmatter: false,
-    });
+    };
 
-    return { ...fm, slug, readTime: estimateReadTime(content), lang: detectedLang, source };
+    return { ...fm, slug, readTime: estimateReadTime(content), lang: detectedLang, rawContent: content, mdxOptions };
   }
 
   return null;
