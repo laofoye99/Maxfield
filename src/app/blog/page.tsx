@@ -1,8 +1,9 @@
 // Server Component — no "use client"
-import { getAllPostMeta } from "@/lib/markdown";
-import { BlogView       } from "@/components/views/BlogView";
+import { getAllPostMeta, getAllPostMetaZh } from "@/lib/markdown";
+import { BlogView } from "@/components/views/BlogView";
 
 export default function BlogPage() {
-  const posts = getAllPostMeta();
-  return <BlogView posts={posts} />;
+  const postsEn = getAllPostMeta();
+  const postsZh = getAllPostMetaZh();
+  return <BlogView postsEn={postsEn} postsZh={postsZh} />;
 }
