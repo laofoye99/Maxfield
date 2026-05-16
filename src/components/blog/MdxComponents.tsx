@@ -89,6 +89,14 @@ export function Details({ summary, children }: DetailsProps) {
 // ── Mermaid detection ─────────────────────────────────────────────────────────
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+function extractText(node: any): string {
+  if (typeof node === "string") return node;
+  if (Array.isArray(node)) return node.map(extractText).join("");
+  if (node?.props?.children) return extractText(node.props.children);
+  return "";
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Pre({ children, ...props }: any) {
   const code = children?.props;
   // rehype-pretty-code adds data-language attribute
@@ -96,15 +104,7 @@ function Pre({ children, ...props }: any) {
   // Also check className as fallback
   const className: string = code?.className || "";
   if (lang === "mermaid" || className.includes("language-mermaid")) {
-    // Extract raw text from code children (handles both string and spanned content)
-    let chart = "";
-    const cc = code?.children;
-    if (typeof cc === "string") {
-      chart = cc;
-    } else if (Array.isArray(cc)) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      chart = cc.map((c: any) => (typeof c === "string" ? c : c?.props?.children ?? "")).join("\n");
-    }
+    const chart = extractText(code?.children);
     return <MermaidBlock chart={chart} />;
   }
   return <pre {...props}>{children}</pre>;

@@ -95,6 +95,23 @@ body {
 .dark :not(pre) > code[data-theme="light"] { display: none; }
 .dark :not(pre) > code[data-theme="dark"]  { display: inline; }
 
+/* ── Shiki dual-theme syntax highlighting colors ──────────────────────────── */
+/* shiki sets --shiki-light / --shiki-dark CSS vars on <span> elements.
+   We must read them into the color property for them to take effect. */
+.prose pre code [data-line] > span {
+  color: var(--shiki-light);
+}
+.dark .prose pre code [data-line] > span {
+  color: var(--shiki-dark);
+}
+/* Inline code highlighting */
+.prose :not(pre) > code [data-line] > span {
+  color: var(--shiki-light);
+}
+.dark .prose :not(pre) > code [data-line] > span {
+  color: var(--shiki-dark);
+}
+
 /* ── Prose ────────────────────────────────────────────────────────────────── */
 .prose pre              { @apply rounded-xl text-sm overflow-x-auto; }
 .prose pre > code       { @apply grid; }
@@ -108,14 +125,16 @@ body {
 
 /* ── KaTeX display math ────────────────────────────────────────────────────── */
 /* Ensure block formulas ($$) render as centered display blocks like GitHub */
-.katex-display {
+.katex-display,
+.math-display {
   display: block;
   margin: 1em 0;
   text-align: center;
   overflow-x: auto;
   overflow-y: hidden;
 }
-.prose .katex-display {
+.prose .katex-display,
+.prose .math-display {
   display: block;
   margin: 1em 0;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import mermaid from "mermaid";
 
 let initialized = false;
@@ -18,22 +18,27 @@ type Props = { chart: string };
 
 export function MermaidBlock({ chart }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const [svg, setSvg] = useState<string>("");
 
   useEffect(() => {
-    if (ref.current) {
-      // Clear previous content and re-render
-      ref.current.innerHTML = chart;
-      // Use unique ID to avoid conflicts
-      const id = `mermaid-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-      ref.current.setAttribute("data-mermaid-id", id);
-      try {
-        mermaid.run({ nodes: [ref.current] });
-      } catch {
-        // If rendering fails, keep the raw text
-        ref.current.textContent = chart;
-      }
-    }
+    let cancelled = false;
+    const id = `mermaid-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    mermaid
+      .render(id, chart)
+      .then(({ svg: rendered }) => {
+        if (!cancelled) setSvg(rendered);
+      })
+      .catch(() => {
+        if (!cancelled) setSvg(`<pre style="color:var(--muted)">${chart}</pre>`);
+      });
+    return () => { cancelled = true; };
   }, [chart]);
 
-  return <div ref={ref} className="mermaid my-6 flex justify-center" />;
+  return (
+    <div
+      ref={ref}
+      className="mermaid my-6 flex justify-center overflow-x-auto"
+      dangerouslySetInnerHTML={{ __html: svg }}
+    />
+  );
 }

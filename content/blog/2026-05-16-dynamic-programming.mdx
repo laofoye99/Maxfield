@@ -21,7 +21,9 @@ Let's walk through this with a classic example: the Fibonacci sequence.
 
 We have: 
 
-$$F(n) = F(n-1) + F(n-2)$$
+$$
+F(n) = F(n-1) + F(n-2)
+$$
 
 #### 1. Define the state
 
@@ -31,7 +33,9 @@ To compute $F(n)$, We need $F(n-1)$ and $F(n-2)$. That means we need all previou
 
 This one is obvious:
 
-$$F(n) = F(n-1)+F(n-2)$$
+$$
+F(n) = F(n-1)+F(n-2)
+$$
 
 #### 3. Base cases
 
@@ -61,7 +65,7 @@ def fib(n):
 
 Looks clean, right? But let's check the time it takes to compute the first 40 terms:
 
-![image-20260516164509478](\image\image-20260516164509478.png)
+![image-20260516164509478](/image/image-20260516164509478.png)
 
 After the 30th term, things slow down dramatically. Computing the 100th term? Almost impossible. Why?
 
@@ -100,7 +104,7 @@ def fib(n):
     return dp[n]
 ```
 
-![image-20260516171046325](\image\image-20260516171046325.png)
+![image-20260516171046325](/image/image-20260516171046325.png)
 
 Now it's fast - no matter how large n is.
 
