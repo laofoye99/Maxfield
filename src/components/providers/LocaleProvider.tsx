@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   getTranslation,
   defaultLocale,
@@ -23,8 +23,21 @@ const LocaleContext = createContext<LocaleContextValue>({
 export function LocaleProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocale] = useState<Locale>(defaultLocale);
 
+  // On mount: read localStorage first, then fall back to browser language
+  useEffect(() => {
+    const stored = localStorage.getItem("locale") as Locale | null;
+    if (stored === "en" || stored === "zh") {
+      setLocale(stored);
+      return;
+    }
+    const browser = navigator.language || navigator.languages?.[0] || "";
+    setLocale(browser.startsWith("zh") ? "zh" : "en");
+  }, []);
+
   function toggle() {
-    setLocale((prev) => (prev === "en" ? "zh" : "en"));
+    const next: Locale = locale === "en" ? "zh" : "en";
+    localStorage.setItem("locale", next);
+    setLocale(next);
   }
 
   return (

@@ -10,22 +10,23 @@ import type { PostMeta } from "@/lib/markdown";
 const PAGE_SIZE = 8;
 
 interface BlogViewProps {
-  posts: PostMeta[];
+  postsEn: PostMeta[];
+  postsZh: PostMeta[];
 }
 
-export function BlogView({ posts }: BlogViewProps) {
-  const { tr } = useLocale();
+export function BlogView({ postsEn, postsZh }: BlogViewProps) {
+  const { locale, tr } = useLocale();
   const [page, setPage] = useState(1);
 
+  const posts      = locale === "zh" ? postsZh : postsEn;
   const totalPages = Math.ceil(posts.length / PAGE_SIZE);
   const visible    = posts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <>
-      <style>{`.blog-grid{display:grid;grid-template-columns:1fr 272px;}`}</style>
+      <style>{`.blog-grid{display:grid;grid-template-columns:1fr 300px;}`}</style>
       <div className="blog-grid" style={{ maxWidth: 1100, margin: "0 auto", width: "100%" }}>
 
-        {/* Left */}
         <main
           style={{ borderRight: "1px solid var(--border)" }}
           className="px-8 py-10 min-h-[calc(100vh-56px)]"
@@ -48,7 +49,6 @@ export function BlogView({ posts }: BlogViewProps) {
           )}
         </main>
 
-        {/* Right */}
         <Sidebar />
       </div>
     </>

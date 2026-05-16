@@ -8,12 +8,14 @@ import { Sidebar         } from "@/components/layout/Sidebar";
 import { Pagination      } from "@/components/ui/Pagination";
 import { useLocale       } from "@/components/providers/LocaleProvider";
 import { projects        } from "@/config/projects";
+import { getAllPostMeta, getAllPostMetaZh } from "@/lib/markdown";
 import type { PostMeta   } from "@/lib/markdown";
 
 const PAGE_SIZE = 5;
 
 interface HomeViewProps {
-  recentPosts: PostMeta[];
+  recentPostsEn: PostMeta[];
+  recentPostsZh: PostMeta[];
 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
@@ -28,7 +30,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 
 export function HomeView({ recentPosts }: HomeViewProps) {
-  const { tr } = useLocale();
+  const { tr, locale } = useLocale();
   const [page, setPage] = useState(1);
 
   const blogRef    = useRef<HTMLDivElement>(null);

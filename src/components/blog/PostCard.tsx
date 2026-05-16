@@ -11,7 +11,7 @@ import type { PostMeta } from "@/lib/markdown";
 // blue   (skill) — tech tool: python, pytorch, plotly …
 // gray   (gray)  — meta / auxiliary: meta, notes, draft …
 
-const CAT_TAGS  = new Set(["math","robotics","vision","3d","ml","ai","slam","physics","biology","chemistry"]);
+const CAT_TAGS  = new Set(["math","robotics","vision","3d","ml","ai","slam","physics","quant"]);
 const GRAY_TAGS = new Set(["meta","notes","draft","misc","tip","log","review"]);
 
 function tagVariant(tag: string): "cat" | "skill" | "gray" {
@@ -56,7 +56,7 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   const { locale, tr } = useLocale();
 
-  const title = locale === "zh" && post.titleZh ? post.titleZh : post.title;
+  const title = post.title;
   const date  = formatDate(post.date, locale === "zh" ? "zh-CN" : "en-US");
   const tags  = post.tags ?? [];
 

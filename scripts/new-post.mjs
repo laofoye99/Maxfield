@@ -6,8 +6,8 @@ const rl  = readline.createInterface({ input: process.stdin, output: process.std
 const ask = (q) => new Promise((res) => rl.question(q, res));
 
 // ── Tag lists ─────────────────────────────────────────────────────────────────
-const CAT_TAGS   = ["math", "robotics", "vision", "slam", "ml", "ai", "physics"];
-const SKILL_TAGS = ["python", "pytorch", "plotly", "opencv", "ros2", "threejs", "docker", "c++", "react", "typescript"];
+const CAT_TAGS   = ["math", "robotics", "vision", "slam", "ml", "ai", "physics", "quant"];
+const SKILL_TAGS = ["python", "pytorch", "plotly", "opencv", "ros2", "threejs", "docker", "c++", "react", "typescript", "pandas", "numpy"];
 const META_TAGS  = ["notes", "meta", "review", "draft"];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -21,16 +21,11 @@ async function pickTags(label, list) {
   showTags(list);
   const input = await ask("\x1b[90m> \x1b[0m");
   if (!input.trim()) return [];
-  return input
-    .split(",")
-    .map((n) => list[parseInt(n.trim()) - 1])
-    .filter(Boolean);
+  return input.split(",").map((n) => list[parseInt(n.trim()) - 1]).filter(Boolean);
 }
 
 function slugify(str) {
-  return str
-    .toLowerCase()
-    .trim()
+  return str.toLowerCase().trim()
     .replace(/\s+/g, "-")
     .replace(/[^a-z0-9-]/g, "")
     .replace(/--+/g, "-");
@@ -39,40 +34,53 @@ function slugify(str) {
 // ── Main ──────────────────────────────────────────────────────────────────────
 console.log("\n\x1b[1m\x1b[34m✦ New Post\x1b[0m\n");
 
-const title   = await ask("标题（英文）：");
-const titleZh = await ask("标题（中文，回车跳过）：");
-const summary = await ask("简短描述：");
+// Pick language
+console.log("文章语言 / Post language:");
+console.log("  \x1b[36m1\x1b[0m  English");
+console.log("  \x1b[36m2\x1b[0m  中文");
+const langInput = await ask("\x1b[90m> \x1b[0m");
+const isZh      = langInput.trim() === "2";
+const lang      = isZh ? "zh" : "en";
+const postsDir  = isZh ? "content/blog-zh" : "content/blog";
 
-const cat   = await pickTags("一级标签 — 学科分类（绿色）", CAT_TAGS);
-const skill = await pickTags("二级标签 — 技术工具（蓝色）", SKILL_TAGS);
-const meta  = await pickTags("三级标签 — 元数据（灰色）",  META_TAGS);
+const title   = await ask(isZh ? "标题（中文）：" : "Title (English): ");
+const summary = await ask(isZh ? "简短描述：" : "Summary: ");
+
+const cat   = await pickTags(
+  isZh ? "一级标签 — 学科分类（绿色）" : "Category tags (green)",
+  CAT_TAGS,
+);
+const skill = await pickTags(
+  isZh ? "二级标签 — 技术工具（蓝色）" : "Skill tags (blue)",
+  SKILL_TAGS,
+);
+const meta  = await pickTags(
+  isZh ? "三级标签 — 元数据（灰色）" : "Meta tags (gray)",
+  META_TAGS,
+);
 
 const tags     = [...cat, ...skill, ...meta];
 const date     = new Date().toISOString().split("T")[0];
 const slug     = slugify(title);
 const fileName = `${date}-${slug}.mdx`;
-const filePath = path.join("content", "blog", fileName);
+const filePath = path.join(postsDir, fileName);
 
-// Build frontmatter
-const tagStr   = tags.length ? tags.map((t) => `"${t}"`).join(", ") : "";
-const lines    = [
+const tagStr = tags.map((t) => `"${t}"`).join(", ");
+const lines  = [
   "---",
   `title: "${title}"`,
-  titleZh.trim() ? `titleZh: "${titleZh}"` : null,
   `date: "${date}"`,
   `summary: "${summary}"`,
   `tags: [${tagStr}]`,
   "---",
   "",
-  "## Introduction",
+  isZh ? "## 简介" : "## Introduction",
   "",
   "",
-].filter((l) => l !== null);
+].join("\n");
 
-fs.mkdirSync(path.dirname(filePath), { recursive: true });
-fs.writeFileSync(filePath, lines.join("\n"), "utf-8");
+fs.mkdirSync(postsDir, { recursive: true });
+fs.writeFileSync(filePath, lines, "utf-8");
 
-console.log(`\n\x1b[32m✓ Created:\x1b[0m ${filePath}`);
-console.log(`\x1b[90mOpen with: code ${filePath}\x1b[0m\n`);
-
+console.log(`\n\x1b[32m✓ Created (${lang}):\x1b[0m ${filePath}\n`);
 rl.close();
