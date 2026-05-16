@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link        from "next/link";
-import { MDXRemote } from "next-mdx-remote";
+import { MdxContent } from "@/components/blog/MdxContent";
 import { Tag       } from "@/components/ui/Tag";
-import { mdxComponents } from "@/components/blog/MdxComponents";
 import { getPost, getAllPostSlugs } from "@/lib/markdown";
 import { formatDate } from "@/lib/utils";
 
@@ -69,7 +68,7 @@ export default async function PostPage({ params }: Props) {
           prose-code:before:content-none prose-code:after:content-none
           prose-img:rounded-xl prose-img:shadow-sm"
       >
-        <MDXRemote {...post.source} components={mdxComponents} />
+        <MdxContent source={post.source} />
       </article>
     </div>
   );
