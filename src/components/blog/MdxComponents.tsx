@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { MermaidBlock } from "./MermaidBlock";
 
 // ── Callout ───────────────────────────────────────────────────────────────────
 
@@ -85,6 +86,30 @@ export function Details({ summary, children }: DetailsProps) {
   );
 }
 
+// ── Mermaid detection ─────────────────────────────────────────────────────────
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function Pre({ children, ...props }: any) {
+  const code = children?.props;
+  // rehype-pretty-code adds data-language attribute
+  const lang = code?.["data-language"] || "";
+  // Also check className as fallback
+  const className: string = code?.className || "";
+  if (lang === "mermaid" || className.includes("language-mermaid")) {
+    // Extract raw text from code children (handles both string and spanned content)
+    let chart = "";
+    const cc = code?.children;
+    if (typeof cc === "string") {
+      chart = cc;
+    } else if (Array.isArray(cc)) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      chart = cc.map((c: any) => (typeof c === "string" ? c : c?.props?.children ?? "")).join("\n");
+    }
+    return <MermaidBlock chart={chart} />;
+  }
+  return <pre {...props}>{children}</pre>;
+}
+
 // ── Component map (passed to MDXRemote) ───────────────────────────────────────
 
 export const mdxComponents = {
@@ -92,4 +117,5 @@ export const mdxComponents = {
   Steps,
   Step,
   Details,
+  pre: Pre,
 };

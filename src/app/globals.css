@@ -105,3 +105,17 @@ body {
 }
 .prose a[href^="#"]       { text-decoration: none; color: inherit; }
 .prose a[href^="#"]:hover { color: var(--primary-dark); }
+
+/* ── KaTeX display math ────────────────────────────────────────────────────── */
+/* Ensure block formulas ($$) render as centered display blocks like GitHub */
+.katex-display {
+  display: block;
+  margin: 1em 0;
+  text-align: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.prose .katex-display {
+  display: block;
+  margin: 1em 0;
+}
