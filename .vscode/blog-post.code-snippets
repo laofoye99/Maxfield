@@ -1,0 +1,67 @@
+{
+  "New Blog Post Frontmatter": {
+    "prefix": "post",
+    "body": [
+      "---",
+      "title: \"$1\"",
+      "titleZh: \"$2\"",
+      "date: \"$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE\"",
+      "summary: \"$3\"",
+      "tags: [$4]",
+      "---",
+      "",
+      "## $5",
+      "",
+      "$0"
+    ],
+    "description": "New blog post frontmatter"
+  },
+
+  "Tag - Category (green)": {
+    "prefix": "tcat",
+    "body": ["\"${1|math,robotics,vision,slam,ml,ai,physics|}\""],
+    "description": "Insert a category tag"
+  },
+
+  "Tag - Skill (blue)": {
+    "prefix": "tskill",
+    "body": ["\"${1|python,pytorch,plotly,opencv,ros2,threejs,docker,c++|}\""],
+    "description": "Insert a skill tag"
+  },
+
+  "Tag - Meta (gray)": {
+    "prefix": "tmeta",
+    "body": ["\"${1|notes,meta,review,draft|}\""],
+    "description": "Insert a meta tag"
+  },
+
+  "Callout": {
+    "prefix": "callout",
+    "body": [
+      "<Callout type=\"${1|tip,info,warning,danger|}\">",
+      "  $2",
+      "</Callout>"
+    ],
+    "description": "Insert a callout block"
+  },
+
+  "Math block": {
+    "prefix": "math",
+    "body": [
+      "$$",
+      "$1",
+      "$$"
+    ],
+    "description": "Insert a math block"
+  },
+
+  "Details block": {
+    "prefix": "details",
+    "body": [
+      "<Details summary=\"$1\">",
+      "  $2",
+      "</Details>"
+    ],
+    "description": "Insert a collapsible details block"
+  }
+}
