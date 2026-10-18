@@ -30,9 +30,10 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
       setLocale(stored);
       return;
     }
-    const browser = navigator.language || navigator.languages?.[0] || "";
-    setLocale(browser.startsWith("zh") ? "zh" : "en");
+    setLocale(defaultLocale);
   }, []);
+
+  useEffect(() => { document.documentElement.lang = locale === "zh" ? "zh-CN" : "en"; }, [locale]);
 
   function toggle() {
     const next: Locale = locale === "en" ? "zh" : "en";
@@ -50,3 +51,4 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
 export function useLocale(): LocaleContextValue {
   return useContext(LocaleContext);
 }
+

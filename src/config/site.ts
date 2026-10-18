@@ -10,9 +10,9 @@ export const siteConfig = {
   },
 
   meta: {
-    title:       "Maxfield",
+    title:       "Max Ge",
     description: "Personal blog and portfolio of Max Ge.",
-    url:         "https://maxfield.dev", // 改成你的实际域名
+    url:         "https://maxge.dev", // 改成你的实际域名
   },
 
   nav: [

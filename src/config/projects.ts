@@ -13,13 +13,13 @@ export interface Project {
 export const projects: Project[] = [
   {
     id:       "project-1",
-    nameEn:   "Project Name",
-    nameZh:   "项目名称",
-    descEn:   "A brief description of what this project does and what problems it solves.",
-    descZh:   "项目的简短描述，说明它的功能以及解决的问题。",
+    nameEn:   "maxge.dev",
+    nameZh:   "maxge.dev 个人博客",
+    descEn:   "A bilingual journal built with Next.js, MDX, and static publishing.",
+    descZh:   "使用 Next.js 与 MDX 构建的双语个人博客，支持代码高亮、数学公式和 Mermaid 图表。",
     url:      "https://github.com/laofoye99",
     repoUrl:  "https://github.com/laofoye99",
-    tech:     ["Python", "React", "TypeScript"],
+    tech:     ["Next.js", "MDX", "TypeScript"],
     featured: true,
   },
 ];

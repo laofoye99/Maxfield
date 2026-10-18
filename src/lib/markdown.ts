@@ -53,7 +53,7 @@ function readDir(dir: string, lang: "en" | "zh"): PostMeta[] {
 
   return fs
     .readdirSync(dir)
-    .filter((f) => f.endsWith(".mdx") || f.endsWith(".md"))
+    .filter((f) => (f.endsWith(".mdx") || f.endsWith(".md")) && fs.readFileSync(path.join(dir, f), "utf-8").trim().length > 0)
     .map((filename) => {
       const slug              = filename.replace(/\.(mdx|md)$/, "");
       const raw               = fs.readFileSync(path.join(dir, filename), "utf-8");
@@ -123,21 +123,7 @@ export async function getPost(slug: string, lang?: "en" | "zh"): Promise<Post | 
 }
 
 /** All slugs for static generation (both languages) */
-export function getAllPostSlugs(): { slug: string; lang: "en" | "zh" }[] {
-  const en = fs.existsSync(POSTS_DIR)
-    ? fs.readdirSync(POSTS_DIR)
-        .filter((f) => f.endsWith(".mdx") || f.endsWith(".md"))
-        .map((f) => ({ slug: f.replace(/\.(mdx|md)$/, ""), lang: "en" as const }))
-    : [];
-
-  const zh = fs.existsSync(POSTS_DIR_ZH)
-    ? fs.readdirSync(POSTS_DIR_ZH)
-        .filter((f) => f.endsWith(".mdx") || f.endsWith(".md"))
-        .map((f) => ({ slug: f.replace(/\.(mdx|md)$/, ""), lang: "zh" as const }))
-    : [];
-
-  return [...en, ...zh];
-}
+export function getAllPostSlugs(): { slug: string; lang: "en" | "zh" }[] { return [...getAllPostMeta(), ...getAllPostMetaZh()].filter((p,i,all) => all.findIndex(q => q.slug === p.slug) === i).map(({slug,lang}) => ({slug,lang})); }
 
 /**
  * Get previous and next posts for a given slug.

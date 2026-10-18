@@ -15,10 +15,10 @@ interface BlogViewProps {
 }
 
 export function BlogView({ postsEn, postsZh }: BlogViewProps) {
-  const { locale, tr } = useLocale();
+  const { tr } = useLocale();
   const [page, setPage] = useState(1);
 
-  const posts      = locale === "zh" ? postsZh : postsEn;
+  const posts = [...postsEn, ...postsZh.filter(p => !postsEn.some(e => e.slug === p.slug))].sort((a,b) => Date.parse(b.date)-Date.parse(a.date));
   const totalPages = Math.ceil(posts.length / PAGE_SIZE);
   const visible    = posts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
@@ -54,3 +54,4 @@ export function BlogView({ postsEn, postsZh }: BlogViewProps) {
     </>
   );
 }
+

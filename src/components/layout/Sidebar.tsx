@@ -111,6 +111,7 @@ export function Sidebar() {
 
       <Divider />
 
+      {education.length > 0 && <>
       {/* Education */}
       <div className="w-full">
         <InfoLabel>{tr.sidebar.education}</InfoLabel>
@@ -127,6 +128,7 @@ export function Sidebar() {
 
       <Divider />
 
+      </>}
       {/* Resume button */}
       <Link
         href="/resume"

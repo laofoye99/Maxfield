@@ -50,7 +50,7 @@ function SiteLogo() {
         color:         "var(--text)",
         lineHeight:    1,
       }}>
-        Max<span style={{ color: "var(--primary)" }}>field</span>
+        Max<span style={{ color: "var(--primary)" }}>ge.dev</span>
       </span>
     </div>
   );
@@ -92,7 +92,7 @@ export function Navbar() {
         <div className="flex items-center gap-1">
 
           {/* Blog + Projects — hidden on homepage since homepage already has both */}
-          {!isHome && siteConfig.nav.map(({ href, labelEn, labelZh }) => {
+          {siteConfig.nav.map(({ href, labelEn, labelZh }) => {
             const active = pathname.startsWith(href);
             return (
               <Link

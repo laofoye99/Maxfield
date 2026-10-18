@@ -1,125 +1,18 @@
 "use client";
-
-import Link               from "next/link";
-import { useRef, useState } from "react";
-import { PostCard        } from "@/components/blog/PostCard";
-import { ProjectCard     } from "@/components/projects/ProjectCard";
-import { Sidebar         } from "@/components/layout/Sidebar";
-import { Pagination      } from "@/components/ui/Pagination";
-import { useLocale       } from "@/components/providers/LocaleProvider";
-import { projects        } from "@/config/projects";
-import type { PostMeta   } from "@/lib/markdown";
-
-const PAGE_SIZE = 5;
-
-interface HomeViewProps {
-  recentPostsEn: PostMeta[];
-  recentPostsZh: PostMeta[];
-}
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p
-      style={{ color: "#38A169", letterSpacing: "0.18em" }}
-      className="text-[0.72rem] font-bold uppercase mb-5"
-    >
-      {children}
-    </p>
-  );
-}
-
-export function HomeView({ recentPostsEn, recentPostsZh }: HomeViewProps) {
-  const { locale, tr } = useLocale();
-  const [page, setPage] = useState(1);
-  const recentPosts = locale === "zh" ? recentPostsZh : recentPostsEn;
-  
-  const blogRef    = useRef<HTMLDivElement>(null);
-  const projectRef = useRef<HTMLDivElement>(null);
-
-  const totalPages = Math.ceil(recentPosts.length / PAGE_SIZE);
-  const visible    = recentPosts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-  const featured   = projects.filter((p) => p.featured);
-
-  return (
-    <>
-      <style>{`.home-grid { display: grid; grid-template-columns: 1fr 300px; }`}</style>
-      <div className="home-grid" style={{ maxWidth: 1100, margin: "0 auto", width: "100%" }}>
-
-        {/* ── Left: main content ── */}
-        <main
-          style={{ borderRight: "1px solid var(--border)" }}
-          className="px-8 py-10 min-h-[calc(100vh-56px)]"
-        >
-          {/* Blog section */}
-          <div ref={blogRef} id="blog">
-            <SectionLabel>{tr.recentStories}</SectionLabel>
-
-            {visible.length === 0 ? (
-              <p style={{ color: "var(--muted)" }} className="text-sm mb-10">
-                {tr.blog.empty}
-              </p>
-            ) : (
-              visible.map((post) => <PostCard key={post.slug} post={post} />)
-            )}
-
-            {totalPages > 1 && (
-              <Pagination total={totalPages} current={page} onChange={setPage} />
-            )}
-
-            <div className="mt-5 mb-14">
-              <Link
-                href="/blog"
-                style={{ color: "var(--muted)" }}
-                className="text-[0.82rem] font-medium transition-colors duration-300 hover:text-[var(--text)]"
-              >
-                {tr.allPosts} →
-              </Link>
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div
-            style={{ borderTop: "1px solid var(--border)" }}
-            className="mb-10"
-          />
-
-          {/* Projects section */}
-          <div ref={projectRef} id="projects">
-            <SectionLabel>{tr.featuredProjects}</SectionLabel>
-
-            {featured.length === 0 ? (
-              <p style={{ color: "var(--muted)" }} className="text-sm">
-                {tr.projects.empty}
-              </p>
-            ) : (
-              <div
-                style={{
-                  display:             "grid",
-                  gridTemplateColumns: "repeat(2, 1fr)",
-                  gap:                 "1rem",
-                }}
-              >
-                {featured.map((proj) => (
-                  <ProjectCard key={proj.id} project={proj} />
-                ))}
-              </div>
-            )}
-
-            <div className="mt-5">
-              <Link
-                href="/projects"
-                style={{ color: "var(--muted)" }}
-                className="text-[0.82rem] font-medium transition-colors duration-300 hover:text-[var(--text)]"
-              >
-                {tr.allProjects} →
-              </Link>
-            </div>
-          </div>
-        </main>
-
-        {/* ── Right: sidebar ── */}
-        <Sidebar />
-      </div>
-    </>
-  );
+import Link from "next/link";
+import { PostCard } from "@/components/blog/PostCard";
+import { Sidebar } from "@/components/layout/Sidebar";
+import { useLocale } from "@/components/providers/LocaleProvider";
+import type { PostMeta } from "@/lib/markdown";
+export function HomeView({ recentPostsEn, recentPostsZh }: {recentPostsEn: PostMeta[]; recentPostsZh: PostMeta[]}) {
+ const { locale } = useLocale();
+ const zh = locale === "zh";
+ const posts = [...recentPostsZh, ...recentPostsEn.filter(p => !recentPostsZh.some(z => z.slug === p.slug))].sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
+ return <div className="journal-shell">
+ <section className="journal-hero">
+ <div><p className="eyebrow">MAX GE / PERSONAL JOURNAL</p><h1>{zh ? <>保持好奇，<br/>把想法变成<span>现实。</span></> : <>Stay curious.<br/>Make ideas <span>real.</span></>}</h1><p className="hero-description">{zh ? "我是 Max。这里记录我的技术探索、工程实践，以及从问题到理解的过程。" : "I'm Max. I write about engineering, experiments, and the journey from questions to understanding."}</p><div className="hero-links"><Link href="/blog">{zh ? "阅读文章" : "Explore the journal"} ↗</Link><a href="https://github.com/laofoye99" target="_blank" rel="noreferrer">GitHub ↗</a></div></div>
+ <div className="hero-art" aria-hidden="true"><div className="orbit orbit-one"/><div className="orbit orbit-two"/><div className="orbit orbit-three"/><span className="orbit-core">m.</span><p>IDEAS → EXPERIMENTS → INSIGHTS</p></div>
+ </section>
+ <div className="journal-grid"><section id="blog" className="journal-posts"><div className="section-heading"><div><p className="eyebrow">THE JOURNAL</p><h2>{zh ? "最近的记录" : "Latest writing"}</h2></div><Link href="/blog">{zh ? "全部文章" : "All posts"} ↗</Link></div>{posts.slice(0,5).map(p=><PostCard key={p.slug} post={p}/>)}<div id="projects" className="project-note"><p className="eyebrow">BUILDING IN PUBLIC</p><h2>{zh ? "从一个想法，到可以运行的作品。" : "From an idea to something that works."}</h2><p>{zh ? "这个博客本身也是一次持续的工程实践：Markdown 写作、交互式图表与静态部署。" : "This journal is an ongoing engineering project: Markdown publishing, interactive diagrams, and static deployment."}</p><Link href="/projects">{zh ? "探索项目" : "Explore projects"} ↗</Link></div></section><Sidebar/></div>
+ </div>;
 }

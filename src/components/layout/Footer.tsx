@@ -72,18 +72,18 @@ export function Footer() {
         ))}
         <span style={{ color: "var(--border)" }} className="text-[0.7rem] px-1 select-none">·</span>
         <a
-          href="mailto:max@example.com"
+          href="https://github.com/laofoye99"
           style={{ color: "var(--muted)" }}
           className="text-[0.8rem] px-1.5 hover:text-[var(--text)]"
         >
-          {locale === "zh" ? "邮箱" : "Email"}
+          {locale === "zh" ? "联系" : "Contact"}
         </a>
       </div>
 
       {/* Layer 3: copyright */}
       <div className="flex items-center justify-center gap-4">
         <p style={{ color: "var(--muted)", opacity: 0.6 }} className="text-[0.7rem] tracking-wide">
-          © {year} Max Ge · Built with Next.js &amp; Cloudflare Pages
+          © {year} Max Ge · maxge.dev
         </p>
         <a
           href={siteConfig.owner.github}

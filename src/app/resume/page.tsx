@@ -22,7 +22,7 @@ export default function ResumePage() {
       </div>
 
       {/* Experience + Education */}
-      {sections.map(({ label, items }) => (
+      {sections.filter(section => section.items.length > 0).map(({ label, items }) => (
         <div key={label} className="mb-12">
           <SectionLabel>{label}</SectionLabel>
           <div className="space-y-6">
