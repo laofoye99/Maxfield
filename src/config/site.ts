@@ -16,7 +16,9 @@ export const siteConfig = {
   },
 
   nav: [
+    { href: "/resume", labelEn: "Resume", labelZh: "简历" },
     { href: "/blog",     labelEn: "Blog",     labelZh: "文章" },
+    { href: "/essays", labelEn: "Essays", labelZh: "随笔" },
     { href: "/projects", labelEn: "Projects", labelZh: "项目" },
   ],
 } as const;

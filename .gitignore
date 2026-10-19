@@ -38,3 +38,5 @@ next-env.d.ts
 .github/
 .openai/
 .vscode/
+# Local maintenance notes (never publish)
+/.local-docs/

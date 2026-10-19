@@ -1,16 +1,24 @@
-export interface ResumeItem {
-  titleEn:  string;
-  titleZh:  string;
-  period:   string;
-  detailEn: string;
-  detailZh: string;
-}
-
-export const experience: ResumeItem[] = [];
-
-export const education: ResumeItem[] = [];
-
-export const skills: string[] = [
-  "Python", "C++", "ROS2", "React", "TypeScript",
-  "Three.js", "PyTorch", "OpenCV", "Linux", "Docker",
+export interface ResumeItem { titleEn:string; titleZh:string; period:string; detailEn:string; detailZh:string; bulletsEn?:string[]; bulletsZh?:string[] }
+export const experience:ResumeItem[]=[
+ {titleZh:'AIGC 与计算机视觉工程师 · VTLAB Limited',titleEn:'AIGC & Computer Vision Engineer · VTLAB Limited',period:'2024.08 — Present',detailZh:'虚拟试穿、模型评估与推理优化',detailEn:'Virtual try-on, model evaluation and inference optimization',bulletsZh:['结合 SAM、人体姿态估计、Depth Anything V2、TPS、ControlNet 与 LoRA，改善服饰及鞋履生成的结构一致性与可控性。','围绕人体变形、遮挡和服装边界错位开展实验，通过视觉、语义及几何指标评估模型。','构建 TensorRT 推理优化流程，结合 PTQ INT8 量化、结构化剪枝与熵校准；实现约 2.5 倍边缘推理加速，准确率损失低于 1%。','使用 Apache NiFi、pHash 与 Laplacian variance 构建图像 ETL、去重和清晰度检查流程，通过 OpenMetadata 管理数据资产。','编写研发技术报告、实验记录与 SOP，协同外部合作方推进模型及应用集成。'],bulletsEn:['Developed apparel and footwear virtual try-on workflows using SAM, pose estimation, Depth Anything V2, TPS, ControlNet and LoRA.','Evaluated anatomical distortion, occlusion and garment alignment using perceptual, semantic and geometric metrics.','Built TensorRT pipelines with PTQ INT8 quantization, structured pruning and entropy calibration; achieved approximately 2.5× edge inference speedup with less than 1% accuracy loss.','Built image ETL, deduplication and sharpness checks with Apache NiFi, pHash and Laplacian variance; managed assets with OpenMetadata.','Prepared technical reports, experiment records and SOPs, and coordinated model and application integration.']},
+ {titleZh:'数据研究与管理实习 · 江宁医院及疾控中心',titleEn:'Data Research & Management Intern · Jiangning Hospital & CDC',period:'2020.07 — 2022.05',detailZh:'临床与流行病学研究支持',detailEn:'Clinical and epidemiological research support',bulletsZh:['完成研究数据整理、质量检查与统计分析，根据研究目标调整分析参数。'],bulletsEn:['Managed research data, performed quality checks and statistical analysis, and adjusted analytical parameters to study objectives.']}
+];
+export const education:ResumeItem[]=[
+ {titleZh:'香港恒生大学',titleEn:'The Hang Seng University of Hong Kong',period:'2023.09 — 2024.05',detailZh:'数据科学与人工智能理学硕士 · GPA 3.75 / 4.00',detailEn:'MSc in Data Science and AI · GPA 3.75 / 4.00'},
+ {titleZh:'东南大学',titleEn:'Southeast University',period:'2017.09 — 2022.06',detailZh:'预防医学学士',detailEn:'BSc in Preventive Medicine'},
+ {titleZh:'帝国理工学院 · 线上冬季课程',titleEn:'Imperial College London · Online Winter School',period:'2022.01 — 2022.03',detailZh:'数据科学短期课程',detailEn:'Short course in Data Science'}
+];
+export const skillGroups=[
+ {zh:'计算机视觉与深度学习',en:'Vision & deep learning',items:['PyTorch','TensorFlow','OpenCV','SAM','ViT','Pose / Depth Estimation']},
+ {zh:'生成式 AI',en:'Generative AI',items:['ControlNet','LoRA','TPS','Hugging Face','Prompt Design']},
+ {zh:'推理与工程',en:'Inference & engineering',items:['TensorRT','INT8 Quantization','Structured Pruning','Linux','Docker','Git']},
+ {zh:'数据与分析',en:'Data & analytics',items:['Python','SQL','Apache NiFi','OpenMetadata','NumPy','SciPy','SHAP']}
+];
+export const skills=['Python','PyTorch','OpenCV','TensorRT','LoRA','SQL','Docker','Git'];
+export const resumeProjects=[
+ {id:'try-on',zh:'服饰与鞋履虚拟试穿',en:'Apparel & Footwear Virtual Try-On',category:'GENERATIVE VISION',tags:['SAM','ControlNet','LoRA','TPS'],descZh:'融合分割、姿态与深度信息，为生成模型提供结构约束，围绕人体变形、遮挡和服装边界持续评估与迭代。',descEn:'Combined segmentation, pose and depth cues to constrain image generation, evaluating anatomical distortion, occlusion and garment alignment.'},
+ {id:'voice',zh:'粤语 AI 电话客服',en:'Cantonese AI Telephone Customer Service',category:'CONVERSATIONAL AI',tags:['Gemini','Twilio','ElevenLabs','MiniMax'],descZh:'负责 Gemini API 的客服 Prompt 与对话规则设计，协助梳理电话接入、语音识别、回复生成及粤语语音合成流程，支持香港阿里云部署。',descEn:'Designed Gemini customer-service prompts and dialogue rules; supported the telephony, speech recognition, response generation and Cantonese speech synthesis workflow for deployment on Alibaba Cloud in Hong Kong.'},
+ {id:'tennis',zh:'基于物理先验的网球轨迹识别',en:'Physics-Informed Tennis Trajectory Recognition',category:'MOTION & TRACKING',tags:['Physical Priors','Temporal Consistency','Tracking'],descZh:'将抛体运动方程与物理先验引入神经网络训练目标，结合时间连续性处理高速运动中的模糊、遮挡和目标短暂丢失。',descEn:'Incorporated projectile-motion equations and physical priors into neural training objectives, using temporal consistency to address motion blur, occlusion and temporary target loss.'},
+ {id:'medical',zh:'多模态皮肤疾病识别',en:'Multimodal Skin Disease Detection',category:'MULTIMODAL LEARNING',tags:['Cross-Attention','ViT','CNN'],descZh:'构建 Early-Late Hybrid Fusion 模型，融合临床图像与非结构化病史；通过采样及数据增强处理类别不平衡，实验 Accuracy 与 Recall 约 0.92。',descEn:'Built Early-Late Hybrid Fusion of clinical images and unstructured history with cross-attention; addressed class imbalance using sampling and augmentation, achieving approximately 0.92 accuracy and recall in experiments.'},
+ {id:'shap',zh:'可解释机器学习餐厅选址',en:'Explainable Restaurant Site Recommendation',category:'EXPLAINABLE AI',tags:['XGBoost','LSTM','SHAP'],descZh:'基于香港人口普查数据构建 ANN、XGBoost 与 LSTM 集成模型，使用 SHAP 分析人口特征、区域密度等因素对推荐结果的贡献。',descEn:'Built an ANN, XGBoost and LSTM ensemble on Hong Kong Census data, using SHAP to explain the contributions of demographics and regional density to recommendations.'}
 ];
